@@ -1,2 +1,3 @@
 # Ping Me (Chatting App)
-Just learning and building foundation in MERN Stack for skill and professional development
+Hang One...Your sweety is busy with thier actual sweetheart...
+(That why you aren't getting reply...)
