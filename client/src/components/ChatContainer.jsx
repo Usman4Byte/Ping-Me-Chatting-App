@@ -1,9 +1,19 @@
-import React from 'react'
-import assets from '../assets/assets'
+import React, { useRef } from 'react'
+import assets, { messagesDummyData } from '../assets/assets'
+import { formatMessageTime } from '../lib/utils'
 
 const ChatContainer = ({selectedUser, setSelectedUser}) => {
+
+  const scrollEnd = useRef()
+
+  useRef(() => {
+    if (scrollEnd.current) {
+      scrollEnd.current.scrollIntoView({behavior: 'smooth'})
+    }
+  })
+
   return selectedUser ? (
-    <div className='h-full overflow-auto reletive backdrop-blur-lg'>
+  <div className='h-full overflow-auto relative backdrop-blur-lg'>
       {/* header */}
         <div className='flex items-center gap-3 py-3 mx-4 border-b border-stone-500'>
           <img src={assets.profile_martin} alt="" className='w-8 rounded-full'/>
@@ -16,6 +26,34 @@ const ChatContainer = ({selectedUser, setSelectedUser}) => {
         </div>
 
       {/* chat area */}
+  <div className='flex flex-col h-[calc(100%-120px)] overflow-y-auto p-3 pb-6 hide-scrollbar'>
+          {messagesDummyData.map((msg, index) => (
+            <div key={index} className={`flex items-end gap-2 justify-end ${msg.senderId !== '680f50e4f10f3cd28382ecf9' && 'flex-row-reverse'}`}>
+              {msg.image ? (
+                <img src={msg.image} alt="" className='max-w-[230px] border border-gray-700 rounded-lg overflow-hidden mb-8'/>
+              ) : (
+                <p className={`p-2 max-w-[200px] md:text-sm font-light rounded-lg mb-8 break-all bg-violet-500/30 text-white ${msg.senderId === '680f50e4f10f3cd28382ecf9' ? 'rounded-br-none' : 'rounded-bl-none'}`}>{msg.text}</p>
+              )}
+
+              <div className='text-center text-xs'>
+                <img src={msg.senderId === '680f50e4f10f3cd28382ecf9' ? assets.avatar_icon : assets.profile_martin} alt="" className='w-7 rounded-full '/>
+                <p className='text-gray-500'>{formatMessageTime(msg.createdAt)}</p>
+              </div>
+            </div>
+          ))}
+
+          <div ref={scrollEnd}></div>
+      </div>
+
+      {/* bottom area */}
+      
+      <div className='absolute bottom-0 left-0 right-0 flex items-center gap-3 p-3'>
+          <div>
+            <input type="text" placeholder='Send a message...'/>
+            <input type="file" id='image' accept='image/png, image/jpg, image/jpeg, image/webp'/>
+          </div>
+      </div>
+
     </div>
   ) :
   (
