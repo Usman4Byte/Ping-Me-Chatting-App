@@ -1,8 +1,12 @@
-import React, { useState, useRef, useEffect } from 'react'
+import React, { useState, useRef, useEffect, useContext } from 'react'
 import assets, { userDummyData } from '../assets/assets'
 import { useNavigate } from 'react-router-dom'
+import { AuthContext } from '../../context/AuthContext.jsx'
 
 const Sidebar = ({selectedUser, setSelectedUser}) => {
+
+  const {logout} = useContext(AuthContext);
+
   const navigate = useNavigate();
   const [menuOpen, setMenuOpen] = useState(false)
   const menuRef = useRef()
@@ -33,7 +37,7 @@ const Sidebar = ({selectedUser, setSelectedUser}) => {
                 className={`absolute top-full right-0 z-20 w-32 p-5 rounded-md bg-[#282142] border border-gray-600 text-100 ${menuOpen ? 'block' : 'hidden'}`}>
                 <p onClick={() => { setMenuOpen(false); navigate('/profile') }} className='cursor-pointer text-sm'>Edit Profile</p>
                 <hr className='my-2 border-t border-gray-500'/>
-                <p onClick={() => { setMenuOpen(false);}} className='cursor-pointer text-sm'>Logout</p>
+                <p onClick={() => { setMenuOpen(false); logout();}} className='cursor-pointer text-sm'>Logout</p>
               </div>
             </div>
           </div>
